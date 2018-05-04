@@ -1,0 +1,30 @@
+package com.gmail.dmytro.backend.service;
+
+import java.util.Optional;
+
+import com.gmail.dmytro.backend.data.entity.AbstractEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
+
+public abstract class CrudService<T extends AbstractEntity> {
+
+	protected abstract CrudRepository<T, Long> getRepository();
+
+	public T save(T entity) {
+		return getRepository().save(entity);
+	}
+
+	public void delete(long id) {
+		getRepository().delete(id);
+	}
+
+	public T load(long id) {
+		return getRepository().findOne(id);
+	}
+
+	public abstract long countAnyMatching(Optional<String> filter);
+
+	public abstract Page<T> findAnyMatching(Optional<String> filter, Pageable pageable);
+
+}
